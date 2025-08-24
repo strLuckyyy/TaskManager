@@ -57,9 +57,9 @@ pip install fastapi uvicorn
 
 ## 🚀 Rodando a API localmente
 ```
-uvicorn src.main:app --reload
+uvicorn src.main:app --reload --port 8001
 ```
-* O servidor ficará disponível em: http://127.0.0.1:8000
+* O servidor ficará disponível em: http://127.0.0.1:8001/docs
 * Documentação interativa Swagger UI: http://127.0.0.1:8000/docs
 * Documentação Redoc: http://127.0.0.1:8000/redoc
 

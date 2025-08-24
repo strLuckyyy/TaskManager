@@ -1,4 +1,3 @@
-# src/main.py
 from fastapi import FastAPI, HTTPException
 from src.model import CreateTask, Task
 from src.db import Database
