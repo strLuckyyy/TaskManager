@@ -1,1 +1,142 @@
-# TaskManager
+# Task Manager API (FastAPI + SQLite)
+
+Uma API simples de gerenciamento de tarefas desenvolvida com **FastAPI** e **Python**, com persistência de dados via **SQLite**.  
+Permite criar, listar, atualizar e deletar tarefas, incluindo status e flag `completed` automática.
+
+---
+
+## 📂 Estrutura do projeto
+```
+src/
+│── main.py       # Endpoints da API (CRUD)
+│── model.py      # Modelos Pydantic: Task, CreateTask, Status
+│── db.py         # Classe Database para SQLite
+tasks.db          # Database local criado
+```
+
+- **main.py** → contém todos os endpoints:
+  - `POST /tasks/` → criar tarefa
+  - `GET /tasks/` → listar todas as tarefas
+  - `GET /tasks/{task_id}` → buscar tarefa por ID
+  - `PUT /tasks/{task_id}` → atualizar tarefa
+  - `DELETE /tasks/{task_id}` → deletar tarefa
+
+- **model.py** → define os modelos de dados:
+  - `Status` → Enum com valores: `TODO`, `IN_PROGRESS`, `DONE`
+  - `CreateTask` → modelo de entrada (sem `id`)
+  - `Task` → modelo completo (com `id`) usado nas respostas
+
+- **db.py** → contém a classe `Database` que gerencia o SQLite:
+  - Cria a tabela `tasks` se não existir
+  - Métodos de CRUD (`add_task`, `get_tasks`, `get_task_by_id`, `update_task`, `delete_task`)
+
+---
+
+## ⚡ Instalação
+
+1. Clone o repositório:
+```bash
+git clone https://github.com/strLuckyyy/TaskManager.git
+cd TaskManager
+```
+
+2. Crie um ambiente virtual (opcional mas recomendado):
+```
+python -m venv venv
+
+source venv/bin/activate   # Linux/Mac
+venv\Scripts\activate      # Windows
+```
+
+3. Instale as dependências:
+```
+pip install fastapi uvicorn
+```
+
+---
+
+## 🚀 Rodando a API localmente
+```
+uvicorn src.main:app --reload
+```
+* O servidor ficará disponível em: http://127.0.0.1:8000
+* Documentação interativa Swagger UI: http://127.0.0.1:8000/docs
+* Documentação Redoc: http://127.0.0.1:8000/redoc
+
+---
+
+## 📌 Testando a API
+### Criar tarefa
+
+```
+POST /tasks/
+{
+  "title": "Estudar FastAPI",
+  "description": "Aprender CRUD",
+  "status": "TODO"
+}
+```
+Resposta esperada:
+```
+{
+  "id": 1,
+  "title": "Estudar FastAPI",
+  "description": "Aprender CRUD",
+  "status": "TODO",
+  "completed": false
+}
+```
+* Se status for "DONE", o campo completed será True automaticamente.
+
+### Listar tarefas
+```
+GET /tasks/
+```
+* Retorna lista de todas as tarefas.
+
+### Buscar tarefa por ID
+```
+GET /tasks/1
+```
+* Retorna a tarefa específica ou erro 404 se não existir.
+
+### Atualizar tarefa
+```
+PUT /tasks/1
+{
+  "title": "Estudar FastAPI",
+  "description": "Aprender CRUD e endpoints",
+  "status": "DONE"
+}
+```
+* Atualiza a tarefa. Se status = "DONE", completed vira True automaticamente.
+
+### Deletar tarefa
+```
+DELETE /tasks/1
+```
+* Remove a tarefa com o ID especificado. Retorna erro 404 se não existir.
+
+---
+
+## ⚡ Chamando a API do Frontend
+
+O frontend pode consumir a API via requisições HTTP (fetch, axios, curl, PHP file_get_contents etc.).
+
+Exemplo de requisição em JS (axios):
+```
+axios.post('http://127.0.0.1:8000/tasks/', {
+  title: 'Nova tarefa',
+  description: 'Descrição da tarefa',
+  status: 'TODO'
+}).then(res => console.log(res.data))
+```
+
+### Todos os endpoints retornam JSON com os campos:
+* id → número da tarefa
+* title → título
+* description → descrição
+* status → enum (TODO, IN_PROGRESS, DONE)
+* completed → booleano automático baseado no status
+
+---

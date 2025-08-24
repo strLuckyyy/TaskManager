@@ -4,7 +4,7 @@ from src.model import CreateTask, Task
 from src.db import Database
 
 app = FastAPI()
-db = Database()  # instância do SQLite
+db = Database()
 
 @app.post("/tasks/", response_model=Task)
 def create_task(task: CreateTask):

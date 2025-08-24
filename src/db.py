@@ -83,3 +83,16 @@ class Database:
         cursor.execute("DELETE FROM tasks WHERE id=?", (task_id,))
         self.conn.commit()
         return cursor.rowcount > 0
+
+
+
+
+
+
+
+
+
+
+
+
+
