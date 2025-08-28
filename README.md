@@ -60,8 +60,8 @@ pip install fastapi uvicorn
 uvicorn src.main:app --reload --port 8001
 ```
 * O servidor ficará disponível em: http://127.0.0.1:8001
-* Documentação interativa Swagger UI: http://127.0.0.1:8000/docs
-* Documentação Redoc: http://127.0.0.1:8000/redoc
+* Documentação interativa Swagger UI: http://127.0.0.1:8001/docs
+* Documentação Redoc: http://127.0.0.1:8001/redoc
 
 ---
 
@@ -73,7 +73,8 @@ POST /tasks/
 {
   "title": "Teste",
   "description": "Fazendo teste",
-  "status": "todo"
+  "status": "todo",
+  "completed": false
 }
 ```
 Resposta esperada:
@@ -87,6 +88,7 @@ Resposta esperada:
 }
 ```
 * Se status for "done", o campo "completed" será True automaticamente.
+* Deve haver o status "completed" independente
 
 ### Listar tarefas
 ```
@@ -104,12 +106,13 @@ GET /tasks/1
 ```
 PUT /tasks/1
 {
-  "title": "Estudar FastAPI",
-  "description": "Aprender CRUD e endpoints",
-  "status": "DONE"
+  "title": "Teste Update",
+  "description": "Updating the task",
+  "status": "done",
+  "completed": "true"
 }
 ```
-* Atualiza a tarefa. Se status = "DONE", completed vira True automaticamente.
+* Atualiza a tarefa. Se status = "done", "completed" vira True automaticamente.
 
 ### Deletar tarefa
 ```
@@ -128,7 +131,8 @@ Exemplo de requisição em JS (axios):
 axios.post('http://127.0.0.1:8000/tasks/', {
   title: 'Nova tarefa',
   description: 'Descrição da tarefa',
-  status: 'TODO'
+  status: 'todo',
+  completed: false
 }).then(res => console.log(res.data))
 ```
 
