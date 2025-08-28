@@ -1,7 +1,7 @@
 # Task Manager API (FastAPI + SQLite)
 
 Uma API simples de gerenciamento de tarefas desenvolvida com **FastAPI** e **Python**, com persistência de dados via **SQLite**.  
-Permite criar, listar, atualizar e deletar tarefas, incluindo status e flag `completed` automática.
+Permite criar, listar, atualizar, deletar tarefas e status de conclusão.
 
 ---
 
@@ -22,7 +22,7 @@ tasks.db          # Database local criado
   - `DELETE /tasks/{task_id}` → deletar tarefa
 
 - **model.py** → define os modelos de dados:
-  - `Status` → Enum com valores: `TODO`, `IN_PROGRESS`, `DONE`
+  - `Status` → Enum com valores: `todo`, `in_progress`, `done`
   - `CreateTask` → modelo de entrada (sem `id`)
   - `Task` → modelo completo (com `id`) usado nas respostas
 
@@ -59,7 +59,7 @@ pip install fastapi uvicorn
 ```
 uvicorn src.main:app --reload --port 8001
 ```
-* O servidor ficará disponível em: http://127.0.0.1:8001/docs
+* O servidor ficará disponível em: http://127.0.0.1:8001
 * Documentação interativa Swagger UI: http://127.0.0.1:8000/docs
 * Documentação Redoc: http://127.0.0.1:8000/redoc
 
@@ -71,22 +71,22 @@ uvicorn src.main:app --reload --port 8001
 ```
 POST /tasks/
 {
-  "title": "Estudar FastAPI",
-  "description": "Aprender CRUD",
-  "status": "TODO"
+  "title": "Teste",
+  "description": "Fazendo teste",
+  "status": "todo"
 }
 ```
 Resposta esperada:
 ```
 {
   "id": 1,
-  "title": "Estudar FastAPI",
-  "description": "Aprender CRUD",
-  "status": "TODO",
+  "title": "Teste",
+  "description": "Fazendo teste",
+  "status": "todo",
   "completed": false
 }
 ```
-* Se status for "DONE", o campo completed será True automaticamente.
+* Se status for "done", o campo "completed" será True automaticamente.
 
 ### Listar tarefas
 ```
@@ -136,7 +136,7 @@ axios.post('http://127.0.0.1:8000/tasks/', {
 * id → número da tarefa
 * title → título
 * description → descrição
-* status → enum (TODO, IN_PROGRESS, DONE)
-* completed → booleano automático baseado no status
+* status → enum (todo, in_progress, done)
+* completed → bool
 
 ---
