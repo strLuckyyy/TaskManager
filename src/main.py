@@ -14,7 +14,7 @@ def get_tasks():
     return db.get_tasks()
 
 @app.get("/tasks/{task_id}", response_model=Task)
-def get_task(task_id: int):
+def get_tasks(task_id: int):
     task = db.get_task_by_id(task_id)
     if not task:
         raise HTTPException(status_code=404, detail="Task not found")
