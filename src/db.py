@@ -29,10 +29,12 @@ class Database:
         )
         self.conn.commit()
         last = cursor.lastrowid
+        
         if last is None:
             raise RuntimeError("Failed to retrieve lastrowid after insert")
         task_id = last
-        return Task(id=task_id, **task.model_dump(), completed=completed)
+        data = task.model_dump(exclude={"completed"})
+        return Task(id=task_id, **data, completed=completed)
 
     def get_tasks(self) -> list[Task]:
         cursor = self.conn.cursor()
