@@ -1,5 +1,7 @@
 package com.trendingtech.taskmanager.controller;
 
+import com.trendingtech.taskmanager.dto.UserRegistrationDTO;
+import com.trendingtech.taskmanager.dto.UserResponseDTO;
 import com.trendingtech.taskmanager.model.User;
 import com.trendingtech.taskmanager.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -7,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/users")
@@ -15,41 +18,29 @@ public class UserController {
 
     private final UserService userService;
 
-    /*
-    * USER JSON
-    * http://localhost:8080/api/users - /id
-{
-    "username": "name",
-    "email": "email@email.com"
-}
-     * */
-
-    //CREATE
+    // CREATE - Agora recebe senha, cria no Cognito e salva no banco
+    // URL: POST http://localhost:8080/api/users
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        User createUser = userService.createUser(user);
-        return ResponseEntity.ok(createUser);
+    public ResponseEntity<UserResponseDTO> createUser(@RequestBody UserRegistrationDTO registrationDTO) {
+        User createdUser = userService.createUser(registrationDTO);
+        return ResponseEntity.ok(new UserResponseDTO(createdUser));
+    }
+
+    // READ - get all users (Retorna DTOs seguros, sem senha ou dados internos)
+    @GetMapping
+    public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
+        List<User> users = userService.getAllUsers();
+        List<UserResponseDTO> response = users.stream()
+                .map(UserResponseDTO::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(response);
     }
 
     // READ - get user by ID
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+    public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id) {
         User user = userService.getUserById(id);
-        return ResponseEntity.ok(user);
-    }
-
-    // READ - get all users
-    @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
-        return ResponseEntity.ok(users);
-    }
-
-    // UPDATE
-    @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userDetails) {
-        User updatedUser = userService.updateUser(id, userDetails);
-        return ResponseEntity.ok(updatedUser);
+        return ResponseEntity.ok(new UserResponseDTO(user));
     }
 
     // DELETE

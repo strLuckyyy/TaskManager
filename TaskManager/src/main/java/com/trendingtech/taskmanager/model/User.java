@@ -16,5 +16,10 @@ public class User {
     private Long id;
 
     private String username;
+
+    @Column(unique = true, nullable = false)
     private String email;
+
+    @Column(name = "cognito_id", unique = true)
+    private String cognitoId;
 }
