@@ -18,15 +18,12 @@ public class UserController {
 
     private final UserService userService;
 
-    // CREATE - Agora recebe senha, cria no Cognito e salva no banco
-    // URL: POST http://localhost:8080/api/users
     @PostMapping
     public ResponseEntity<UserResponseDTO> createUser(@RequestBody UserRegistrationDTO registrationDTO) {
         User createdUser = userService.createUser(registrationDTO);
         return ResponseEntity.ok(new UserResponseDTO(createdUser));
     }
 
-    // READ - get all users (Retorna DTOs seguros, sem senha ou dados internos)
     @GetMapping
     public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
         List<User> users = userService.getAllUsers();
@@ -36,14 +33,12 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-    // READ - get user by ID
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDTO> getUserById(@PathVariable Long id) {
         User user = userService.getUserById(id);
         return ResponseEntity.ok(new UserResponseDTO(user));
     }
 
-    // DELETE
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);

@@ -9,7 +9,6 @@ public class UserResponseDTO {
     private String username;
     private String email;
 
-    // Construtor utilitário para converter Entity -> DTO
     public UserResponseDTO(User user) {
         this.id = user.getId();
         this.username = user.getUsername();

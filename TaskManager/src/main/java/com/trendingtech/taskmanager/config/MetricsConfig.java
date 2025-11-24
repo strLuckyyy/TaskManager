@@ -16,8 +16,9 @@ import java.util.Map;
 public class MetricsConfig {
 
     @Bean
-    public CloudWatchConfig cloudWatchConfig() { // <--- Retorna a Interface, não a classe
-        return new CloudWatchConfig() { // <--- Instancia a Interface
+    @SuppressWarnings("deprecation")
+    public CloudWatchConfig cloudWatchConfig() {
+        return new CloudWatchConfig() {
             
             private final Map<String, String> configuration = Map.of(
                     "cloudwatch.namespace", "TaskManagerApp",

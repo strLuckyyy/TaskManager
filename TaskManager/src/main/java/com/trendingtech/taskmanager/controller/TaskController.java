@@ -17,38 +17,24 @@ import java.util.Map;
 public class TaskController {
     private final TaskService taskService;
 
-    /* JSON TASK - create e update
-    * http://localhost:8080/api/tasks - /id para pesquisas por id
-{
-  "title": "nome task",
-  "description": "Descrição task",
-  "completed": boolean,
-  "userId": id de um usuario (ex: 1)
-}
-    */
-
-    // CREATE
     @PostMapping
     public ResponseEntity<TaskResponse> createTask(@RequestBody TaskRequest taskRequest) {
         TaskResponse createdTask = taskService.createTask(taskRequest);
         return ResponseEntity.ok(createdTask);
     }
 
-    // READ - by id
     @GetMapping("/{id}")
     public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
         Task task = taskService.getTaskById(id);
         return ResponseEntity.ok(task);
     }
 
-    // READ - get all tasks
     @GetMapping
     public ResponseEntity<List<TaskResponse>> getAllTasks() {
         List<TaskResponse> tasks = taskService.getAllTasks();
         return ResponseEntity.ok(tasks);
     }
 
-    // UPDATE
     @PutMapping("/{id}")
     public ResponseEntity<TaskResponse> updateTask(
             @PathVariable Long id,
@@ -58,12 +44,6 @@ public class TaskController {
         return ResponseEntity.ok(updatedTask);
     }
 
-    // UPDATE USER
-    /* ex: PUT http://localhost:8080/api/tasks/5/user
-{
-    "userId": 2
-}
-    * */
     @PutMapping("/{taskId}/user")
     public ResponseEntity<Task> updateTaskUser(
             @PathVariable Long taskId,
@@ -74,7 +54,6 @@ public class TaskController {
         return ResponseEntity.ok(updatedTask);
     }
 
-    // DELETE
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
